@@ -4,18 +4,8 @@ using namespace std;
 
 namespace itertools {
 
-    template <typename P1> ostream &operator<<(ostream& Ostr, P1 &pa) {
-        Ostr << '{' << pa.first << '}' ;
-        return Ostr;
-    }
-
     template <typename P1, typename P2> ostream &operator<<(ostream& Ostr, pair<P1,P2> &pa) {
-        Ostr << '{' << pa.first << ',' << pa.second << '}';
-        return Ostr;
-    }
-
-    template <typename P1, typename P2, typename P3> ostream &operator<<(ostream& Ostr, pair<P1,P2,P3> &pa) {
-        Ostr << pa.first << ',' << pa.second;
+        Ostr <<  pa.first << ',' << pa.second ;
         return Ostr;
     }
 
