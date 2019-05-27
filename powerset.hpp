@@ -1,39 +1,12 @@
-// namespace itertools {
+#include "iostream"
+#include <iostream>
 
-// template <class T>
+struct EmptyIterable {
+    int* begin() const { return nullptr; }
+    int* end() const { return nullptr; }
+};
 
-// class powerset {
-
-// private:
-//     T Start;
-//     T End; 
-
-//     class iterator {
-
-//     public:
-//         T Temp;
-//         iterator(T v) : Temp(v){}    
-//         bool operator!=(iterator const &other) const { 
-//             return Temp != (other.Temp);
-//         }
-
-//         T operator*() const {
-//             return Temp;
-//         }
-
-//         iterator &operator++() {
-//             ++Temp;
-//             return *this;
-//         }
-//     };
-
-//     public:
-//        powerset(T from, T to) : Start(from), End(to) {}                      
-//        iterator begin() const {
-//          return iterator(Start);
-//           }  
-//         iterator end() const { 
-//          return iterator(End); 
-//         }      
-//   }; 
-// } 
+template<typename T1>
+   EmptyIterable powerset(T1 a) { 
+       return EmptyIterable{}; 
+}
