@@ -10,14 +10,14 @@ namespace itertools {
     }
 
     template <typename T1, typename T2> 
-    class powerset {
+    class zip {
     
     private: 
         T1 iter_1;
         T2 iter_2;
 
     public:
-        powerset(T1 start, T2 end) :  iter_1(start), iter_2(end) {}   
+        zip(T1 start, T2 end) :  iter_1(start), iter_2(end) {}   
 
     auto begin() const{ 
         return  iterator<decltype(iter_1.begin()),decltype(iter_2.begin())>(iter_1.begin(), iter_2.begin()); }  
