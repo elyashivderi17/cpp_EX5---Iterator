@@ -45,7 +45,7 @@ namespace itertools {
                     ++iter_3;
                     Check = true;
                     for(int i=0 ; i<count ; i++){
-                        iter_4--;
+                        --iter_4;
                     }
                     count=0;
                 }
@@ -56,7 +56,7 @@ namespace itertools {
                 return pair<decltype(*iter_3), decltype(*iter_4)> (*iter_3, *iter_4);
             }
 
-            bool operator!=(const iterator& other){
+            bool operator!=(iterator const & other){
                 if(!(iter_4 != other.iter_4-1)) {
                     Check = false;
                 }

@@ -19,9 +19,9 @@ Iter Iter_a;
 public:
 powerset(Iter value) : Iter_a(value) {}
 
-auto begin() {    return iterator<decltype(Iter_a.begin())> (Iter_a.begin(), Iter_a.end());
+auto begin() const {     return iterator<decltype(Iter_a.begin())> (Iter_a.begin(), Iter_a.end());
 }
-auto end() {       return iterator<decltype(Iter_a.begin())>(Iter_a.end(), Iter_a.end());
+auto end() const{       return iterator<decltype(Iter_a.begin())>(Iter_a.end(), Iter_a.end());
 }
 
 

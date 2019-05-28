@@ -12,10 +12,10 @@ namespace itertools {
     public:
         chain(T1 start, T2 end) :  iter_1(start), iter_2(end) {}   
 
-    auto begin(){ 
+    auto begin() const{ 
         return  iterator<decltype(iter_1.begin()),decltype(iter_2.begin())>(iter_1.begin(), iter_2.begin()); }  
 
-    auto end() {
+    auto end() const{
         return iterator<decltype(iter_1.end()),decltype(iter_2.end())>(iter_1.end(), iter_2.end()); }  
  
     template <typename T3, typename T4>

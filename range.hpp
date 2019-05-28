@@ -1,5 +1,5 @@
 namespace itertools {
-
+#include<iterator>
 template <typename T>
 
 class range {
@@ -17,14 +17,16 @@ private:
             return Temp != (other.Temp);
         }
 
-        T operator*() const {
-            return Temp;
-        }
-
         iterator &operator++() {
             ++Temp;
             return *this;
         }
+        
+        const T operator*() const {
+            return Temp;
+        }
+
+
     };
 
     public:
