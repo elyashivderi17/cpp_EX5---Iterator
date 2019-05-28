@@ -1,5 +1,5 @@
-#include<vector>
 #include<cmath>
+#include<vector>
 
 using namespace std;
 
@@ -8,17 +8,59 @@ namespace itertools{
   template<typename CON>
   class powerset{
 
-    CON A;
+    CON A1;
 
   public:
 
-    powerset(CON temp) : A(temp){}
+    powerset(CON temp) : A1(temp){}
+
+        auto begin() const{return iterator<decltype(A1.begin())>(A1.begin(), A1.end());}
+        auto end() const{return iterator<decltype(A1.begin())>(A1.end(), A1.end());}
 
 
     template<typename T>
     class iterator{
 
-      private :
+public :
+
+      T start;
+      T end;
+      int index;
+      int size;
+      vector<vector<T>> vec;
+
+      iterator(T start_iter,T end_iter) : start(start_iter),end(end_iter),size(calcPow(start_iter,end_iter)),index(0){}
+
+      auto operator*(){
+        vector<T> vecFun = checkSize(start,end);
+        vec = getAllSubsets(vecFun);
+        vector<typename remove_const<typename remove_reference<decltype(*start)>::type>::type> vector;
+        for(auto i : vec[index]){
+        vector.push_back(*i);
+        }
+        return vector;
+      }
+
+      bool operator!= (const iterator & temp){
+        return (index != size);
+      }
+
+      auto operator++() {
+        ++index;
+        return *this;
+      }
+      
+private :
+
+      vector<T> checkSize(const T start,const T end){
+        vector<T> vec;
+        T runner = start;
+        while(runner != end){
+          vec.push_back(runner);
+          ++runner;
+        }
+        return vec;
+      }
 
       vector<vector<T>>  getAllSubsets(const vector<T> & set){
         vector<vector<T>> subset;
@@ -34,75 +76,28 @@ namespace itertools{
           return subset;
       }
 
-      vector<T> change(const T i,const T j){
-        vector<T> ans;
-        T runner = i;
-        while(runner != j){
-          ans.push_back(runner);
-          ++runner;
-        }
-        return ans;
-      }
-
-      size_t length(const T start,const T end){
+      int calcPow(const T start,const T end){
         T runner = start;
-        size_t ans = 0;
+        int base = 0;
         while(runner != end){
-          ans++;
-          ++runner;
+                ++runner;
+                ++base;   
         }
-        return pow(2,ans);
+        return pow(2,base);
       }
-
-      public :
-
-      T start;
-      T end;
-
-      uint index;
-
-      size_t size;
-
-      vector<vector<T>> vec;
-
-      iterator(T start_temp,T end_temp) : start(start_temp),end(end_temp),size(length(start_temp,end_temp)),index(0){}
-
-      auto operator*(){
-        vector<T> v = change(start,end);
-        vec = getAllSubsets(v);
-        vector<typename remove_const<typename remove_reference<decltype(*start)>::type>::type> vector;
-        for(auto i : vec[index]){
-        vector.push_back(*i);
-        }
-        return vector;
-      }
-
-      auto operator++() {
-        ++index;
-        return *this;
-      }
-
-      bool operator!= (const iterator & temp){
-        return (index != size);
-      }
-
     };
-
-    auto begin() const{return iterator<decltype(A.begin())>(A.begin(), A.end());}
-    auto end() const{return iterator<decltype(A.begin())>(A.end(), A.end());}
-
   };
 
     template <typename T>
   ostream & operator << (ostream & output, const vector<T> & input){
     output << "{";
-    auto it = input.begin();
-    if(it != input.end()) {
-        output << *it;
-        ++it;}
-    while (it != input.end()){
-        output << ',' << *it;
-        ++it;}
+    auto iter = input.begin();
+    if(iter != input.end()) {
+        output << *iter;
+        ++iter;}
+    while (iter != input.end()){
+        output << ',' << *iter;
+        ++iter;}
     output << "}";
     return output;
 }
