@@ -1,5 +1,5 @@
+
 namespace itertools {
-#include<iterator>
 template <typename T>
 
 class range {
@@ -21,8 +21,13 @@ private:
             ++Temp;
             return *this;
         }
+
+        auto &operator--() {
+            --Temp;
+            return *this;
+        }
         
-        const T operator*() const {
+        auto operator*() const {
             return Temp;
         }
 

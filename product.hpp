@@ -9,15 +9,23 @@ namespace itertools {
         return Ostr;
     }
 
+
+    bool flag = false; // present if container B is empty
+
+
     template <typename T1, typename T2> 
     class product {
     
     private: 
+
         T1 iter_1;
         T2 iter_2;
 
     public:
-        product(T1 start, T2 end) :  iter_1(start), iter_2(end) {}   
+        product(T1 start_temp, T2 end_temp) :  iter_1(start_temp), iter_2(end_temp){
+            if(!(end_temp.begin() != end_temp.end()))
+            flag = true;
+        }   
 
     auto begin() const{ 
         return  iterator<decltype(iter_1.begin()),decltype(iter_2.begin())>(iter_1.begin(), iter_2.begin()); }  
@@ -31,24 +39,13 @@ namespace itertools {
         private:
             T3 iter_3; 
             T4 iter_4;
-            bool Check; 
-            int count = 0;
+            T4 iter_4Begin;
 
         public:
-            iterator(T3 A, T4 B): iter_3(A) , iter_4(B), Check(true) {}
+            iterator(T3 A, T4 B): iter_3(A) , iter_4Begin(B), iter_4(B) {}
 
             iterator<T3,T4>& operator++() {
-                if(Check){
                     ++iter_4;
-                    count++;
-                }else {
-                    ++iter_3;
-                    Check = true;
-                    for(int i=0 ; i<count ; i++){
-                        --iter_4;
-                    }
-                    count=0;
-                }
                 return *this;
             }
 
@@ -57,10 +54,11 @@ namespace itertools {
             }
 
             bool operator!=(iterator const & other){
-                if(!(iter_4 != other.iter_4-1)) {
-                    Check = false;
+                if(!(iter_4 != other.iter_4Begin)) {
+                    iter_4 = iter_4Begin;
+                    ++iter_3;
                 }
-                return (iter_3 != other.iter_3) && (iter_4 != other.iter_4); 
+                return (iter_3 != other.iter_3 && !flag); 
             }
          
         }; 
