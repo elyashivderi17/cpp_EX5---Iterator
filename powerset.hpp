@@ -1,125 +1,109 @@
-#include <iostream>
-#include <vector>
-#include <cmath>
+#include<vector>
+#include<cmath>
+
+using namespace std;
+
+namespace itertools{
+
+  template<typename CON>
+  class powerset{
+
+    CON A;
+
+  public:
+
+    powerset(CON temp) : A(temp){}
 
 
+    template<typename T>
+    class iterator{
 
-namespace itertools {
+      private :
 
-    
+      vector<vector<T>>  getAllSubsets(const vector<T> & set){
+        vector<vector<T>> subset;
+          vector<T> empty;
+          subset.push_back( empty );
+          for (int i = 0; i < set.size(); i++){
+              vector<vector<T>> subsetTemp = subset;
+              for (int j = 0; j < subsetTemp.size(); j++)
+                  subsetTemp[j].push_back( set[i] );
+              for (int j = 0; j < subsetTemp.size(); j++)
+                  subset.push_back( subsetTemp[j] );
+          }
+          return subset;
+      }
 
-
-template <typename Iter>
-class powerset {
-
-private:
-Iter Iter_a;
-
-public:
-powerset(Iter value) : Iter_a(value) {}
-
-auto begin() const {    return iterator<decltype(Iter_a.begin())> (Iter_a.begin(), Iter_a.end());
-}
-auto end() const {       return iterator<decltype(Iter_a.begin())>(Iter_a.end(), Iter_a.end());
-}
-
-
-
-
-template <typename T>
-class iterator {
-
-
-private:
-
-vector<vector<T>> mix(const vector<T> &other){
-        vector<vector<T>> mix_combin;
-        vector<T> data_temp;
-        mix_combin.push_back(data_temp);
-
-        for (int i = 0; i < other.size(); i++) {
- vector<vector<T>> Temp_mix = mix_combin;
-
-                for (int j = 0; j < Temp_mix.size(); j++) {  Temp_mix[j].push_back(other[i]); }
-                for (int j = 0; j < Temp_mix.size(); j++) {  mix_combin.push_back(Temp_mix[j]); }
+      vector<T> change(const T i,const T j){
+        vector<T> ans;
+        T runner = i;
+        while(runner != j){
+          ans.push_back(runner);
+          ++runner;
         }
-        return mix_combin;
+        return ans;
+      }
+
+      size_t length(const T start,const T end){
+        T runner = start;
+        size_t ans = 0;
+        while(runner != end){
+          ans++;
+          ++runner;
+        }
+        return pow(2,ans);
+      }
+
+      public :
+
+      T start;
+      T end;
+
+      uint index;
+
+      size_t size;
+
+      vector<vector<T>> vec;
+
+      iterator(T start_temp,T end_temp) : start(start_temp),end(end_temp),size(length(start_temp,end_temp)),index(0){}
+
+      auto operator*(){
+        vector<T> v = change(start,end);
+        vec = getAllSubsets(v);
+        vector<typename remove_const<typename remove_reference<decltype(*start)>::type>::type> vector;
+        for(auto i : vec[index]){
+        vector.push_back(*i);
+        }
+        return vector;
+      }
+
+      auto operator++() {
+        ++index;
+        return *this;
+      }
+
+      bool operator!= (const iterator & temp){
+        return (index != size);
+      }
+
+    };
+
+    auto begin() const{return iterator<decltype(A.begin())>(A.begin(), A.end());}
+    auto end() const{return iterator<decltype(A.begin())>(A.end(), A.end());}
+
+  };
+
+    template <typename T>
+  ostream & operator << (ostream & output, const vector<T> & input){
+    output << "{";
+    auto it = input.begin();
+    if(it != input.end()) {
+        output << *it;
+        ++it;}
+    while (it != input.end()){
+        output << ',' << *it;
+        ++it;}
+    output << "}";
+    return output;
 }
-
-int length_iter(const T A,const T B){
-        T data = A;
-        int temp = 0;
-        while(data != B) {  temp++;  ++data;    }
-        return pow(2,temp);
-}
-
-vector<T> Swap(const T a,const T b){
-        
-        vector<T> temp;
-        T run = a;
-        while(run != b) {
-                temp.push_back(run);
-                ++run; }
-        return temp;
-}
-
-
-
-public:
-
-vector<vector<T>>   data;
-T iterable_a;
-T iterable_b;
-int size;
-int value_index;
-
-
-
-iterator(T itA, T itB) : iterable_a(itA), iterable_b(itB), size(length_iter(itA,itB)),value_index(0){}
-
-bool operator!= (const iterator & temp){
-        return (value_index != size);
-}
-
-auto operator++() {      ++value_index;     return *this;}
-
-
-auto operator*(){
-        vector<T> A  = Swap(iterable_a,iterable_b);
-        data = mix(A);
-        
-        vector<typename remove_const<typename remove_reference<decltype(*iterable_b)>::type>::type> temp; 
-       
-        for(auto i : data[value_index]) { temp.push_back(*i);  }
-        return temp;
-}
-
-
-
-
-};
-
-
-
-};
-
-
-
-template <typename T>
-std::ostream &operator<<(std::ostream &os, const std::vector<T> &Value)
-{
-        os << "{";
-
-        auto temp = Value.begin();
-        if(temp != Value.end())  {
-                os << *temp;
-                ++temp; }
-        while (temp != Value.end()) {
-                os << ',' << *temp;
-                ++temp;}
-
-        os << "}";
-        return os;
-}
-
 };
