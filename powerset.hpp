@@ -10,7 +10,7 @@ namespace itertools{
 
     CON A1;
 
-  public:
+ public:
 
     powerset(CON temp) : A1(temp){}
 
@@ -49,7 +49,7 @@ public :
         ++index;
         return *this;
       }
-      
+
 private :
 
       vector<T> checkSize(const T start,const T end){
@@ -81,21 +81,21 @@ private :
         int base = 0;
         while(runner != end){
                 ++runner;
-                ++base;   
+                base = base+1;   
         }
         return pow(2,base);
       }
     };
   };
 
-    template <typename T>
-  ostream & operator << (ostream & output, const vector<T> & input){
+template <typename T>
+  ostream & operator << (ostream & output, const vector<T> & vec){
     output << "{";
-    auto iter = input.begin();
-    if(iter != input.end()) {
+    auto iter = vec.begin();
+    if(iter != vec.end()) {
         output << *iter;
         ++iter;}
-    while (iter != input.end()){
+    while (iter != vec.end()){
         output << ',' << *iter;
         ++iter;}
     output << "}";
